@@ -1,3 +1,3 @@
 # Panterest
-A clone of Pinterest, with Symfony
+A clone of Pinterest, with Symfony.
 Tuto Youtube : https://www.youtube.com/watch?v=_WS5ZNl043s
