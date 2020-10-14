@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Pin;
+use App\Form\PinType;
 use App\Repository\PinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\PinType;
 
 
 
@@ -87,10 +87,13 @@ class PinsController extends AbstractController
     /**
      * @Route("/pins/{id<[0-9]+>}/delete", name="app_pins_delete", methods="DELETE")
      */
-     public function delete(Pin $pin, EntityManagerInterface $em): Response
+     public function delete(Request $request, Pin $pin, EntityManagerInterface $em): Response
      {
-       $em->remove($pin);
-       $em->flush();
+
+       if($this->isCsrfTokenValid('pin_deletion_' . $pin->getId(), $request->request->get('csrf_token'))){
+         $em->remove($pin);
+         $em->flush();
+       }
 
        return $this->redirectToRoute('app_home');
 
